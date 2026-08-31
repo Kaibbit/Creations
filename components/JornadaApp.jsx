@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
-const VERSION = '0.6.2';
+const VERSION = '0.6.3';
 const BOOKS = [
   { id: 'mateus', name: 'Mateus', chapters: 28 },
   { id: 'marcos', name: 'Marcos', chapters: 16 },
@@ -75,10 +75,13 @@ export default function JornadaApp() {
       const { data } = await supabase.auth.getSession();
       if (active) setSession(data.session || null);
       if (data.session?.user?.id) await loadUser(data.session.user.id);
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('reset') === '1') { setAuth('reset'); setMessage(''); }
       if (active) setLoading(false);
     })();
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, next) => {
       if (!active) return;
+      if (event === 'PASSWORD_RECOVERY') { setAuth('reset'); setMessage(''); }
       setSession(next);
       if (next?.user?.id) loadUser(next.user.id);
       else { setProgress({}); setAnswers({}); setNotes({}); }
@@ -137,8 +140,18 @@ export default function JornadaApp() {
     e.preventDefault(); setMessage('');
     const f = new FormData(e.currentTarget), email = String(f.get('email') || '').trim().toLowerCase(), password = String(f.get('password') || ''), name = String(f.get('name') || '');
     if (auth === 'forgot') {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/?reset=1` });
       setMessage(error ? error.message : 'Enviamos o link de recuperação para o seu e-mail.'); return;
+    }
+    if (auth === 'reset') {
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) setMessage(error.message);
+      else {
+        setAuth(null); setMessage('');
+        window.history.replaceState({}, '', window.location.pathname);
+        notify('Senha atualizada com sucesso.');
+      }
+      return;
     }
     if (auth === 'register') {
       const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name }, emailRedirectTo: window.location.origin } });
@@ -172,4 +185,4 @@ export default function JornadaApp() {
 function BookCards({ books, count, onOpen }) { return <div className="bookCards">{books.map((b) => { const n=count(b.id), pct=Math.round(n/b.chapters*100); return <button className="bookCard" key={b.id} onClick={() => onOpen(b.id)}><div className="bookCardTop"><b>{b.name}</b><span>{pct}%</span></div><div className="progressTrack"><i style={{width:`${pct}%`}}/></div><small>{n}/{b.chapters} capítulos</small></button>; })}</div>; }
 function Section({ icon, title, children }) { return <section className="studySection"><div className="sectionTag"><span>{icon}</span>{title}</div>{children}</section>; }
 function Questions({ icon, title, list=[], values={}, onChange, onBlur, compact=false }) { const fields=list.map((q,i) => <div className="question" key={`${i}-${q}`}><label className="questionLabel">{q}</label><textarea value={values?.[String(i)] || ''} onChange={(e) => onChange(i,e.target.value)} onBlur={(e) => onBlur(i,e.target.value)} placeholder="Escreva sua resposta…"/></div>); return compact ? <div>{fields}</div> : <Section icon={icon} title={title}>{fields}</Section>; }
-function AuthModal({ mode, message, onClose, onMode, onSubmit }) { const title=mode==='register'?'Criar conta':mode==='forgot'?'Recuperar senha':'Entrar'; return <div className="modalBackdrop"><div className="authModal"><button className="modalClose" onClick={onClose}>×</button><div className="eyebrow">Jornada Bíblica</div><h2>{title}</h2><form className="authForm" onSubmit={onSubmit}>{mode==='register'?<input name="name" required placeholder="Nome"/>:null}<input name="email" type="email" required placeholder="E-mail"/>{mode!=='forgot'?<input name="password" type="password" minLength={6} required placeholder="Senha"/>:null}<button className="primaryButton" type="submit">{mode==='forgot'?'Enviar link':title}</button></form>{message?<p className="authMessage">{message}</p>:null}{mode==='login'?<div className="authLinks"><button onClick={() => onMode('register')}>Quero criar uma conta</button><button onClick={() => onMode('forgot')}>Esqueci minha senha</button></div>:<button className="backLogin" onClick={() => onMode('login')}>← Voltar para entrar</button>}</div></div>; }
+function AuthModal({ mode, message, onClose, onMode, onSubmit }) { const title=mode==='register'?'Criar conta':mode==='forgot'?'Recuperar senha':mode==='reset'?'Nova senha':'Entrar'; return <div className="modalBackdrop"><div className="authModal"><button className="modalClose" onClick={onClose}>×</button><div className="eyebrow">Jornada Bíblica</div><h2>{title}</h2><form className="authForm" onSubmit={onSubmit}>{mode==='register'?<input name="name" required placeholder="Nome"/>:null}{mode!=='reset'?<input name="email" type="email" required placeholder="E-mail"/>:null}{mode!=='forgot'?<input name="password" type="password" minLength={6} required placeholder={mode==='reset'?'Nova senha':'Senha'} autoComplete={['register','reset'].includes(mode)?'new-password':'current-password'}/>:null}<button className="primaryButton" type="submit">{mode==='forgot'?'Enviar link':mode==='reset'?'Atualizar senha':title}</button></form>{message?<p className="authMessage">{message}</p>:null}{mode==='login'?<div className="authLinks"><button onClick={() => onMode('register')}>Quero criar uma conta</button><button onClick={() => onMode('forgot')}>Esqueci minha senha</button></div>:['register','forgot'].includes(mode)?<button className="backLogin" onClick={() => onMode('login')}>← Voltar para entrar</button>:null}</div></div>; }
