@@ -1,4 +1,5 @@
 import './globals.css';
+import './visual-overrides.css';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 
 const inter = Inter({
