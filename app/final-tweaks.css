@@ -1,0 +1,12 @@
+/* Ajustes finais de interface */
+
+/* No Perfil, a ação de sair já existe no card principal. Evita duplicidade no cabeçalho. */
+.topbar:has(+ main .profilePanel) .accountArea .smallButton {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .topbar:has(+ main .profilePanel) .accountArea {
+    display: none;
+  }
+}
