@@ -123,6 +123,89 @@
   box-shadow: none;
 }
 
+/* Tela de estudo: leitura mais confortável e menos campos gigantes */
+.studyPage {
+  max-width: 820px;
+}
+
+.studyPanel {
+  border-radius: 28px;
+}
+
+.studyPanel > h1 {
+  margin-bottom: 2px;
+}
+
+.studyPanel > h2 {
+  margin-bottom: 16px;
+  color: var(--petroleum-700);
+}
+
+.studyPanel > .lead {
+  max-width: 680px;
+}
+
+.studySection {
+  position: relative;
+  padding: 30px 0;
+}
+
+.sectionTag {
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--petroleum-900);
+}
+
+.sectionTag span {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 28px;
+  border-radius: 9px;
+  background: rgba(232, 220, 203, .5);
+  filter: saturate(.8);
+}
+
+.question {
+  max-width: 700px;
+}
+
+.question + .question {
+  margin-top: 24px;
+}
+
+.questionLabel {
+  margin-bottom: 10px;
+  color: #27343A;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 750;
+}
+
+textarea {
+  min-height: 100px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.78);
+}
+
+.referenceBox {
+  max-width: 700px;
+  padding: 17px 18px;
+  background: rgba(232,220,203,.52);
+  border-color: rgba(179,138,74,.18);
+}
+
+.studyActions {
+  gap: 12px;
+  padding-top: 28px;
+}
+
+.studyActions .primaryButton,
+.studyActions .secondaryButton {
+  min-height: 48px;
+}
+
 /* Navegação desktop integrada visualmente ao cabeçalho */
 @media (min-width: 900px) {
   .page {
@@ -187,6 +270,15 @@
 }
 
 @media (max-width: 480px) {
+  .topbar {
+    min-height: 62px;
+    padding-block: 8px;
+  }
+
+  .logoButton {
+    gap: 8px;
+  }
+
   .logoButton::before {
     width: 27px;
     height: 27px;
@@ -195,6 +287,11 @@
 
   .logoButton::after {
     font-size: 20px;
+  }
+
+  .smallButton {
+    padding: 7px 12px;
+    font-size: 14px;
   }
 
   .hero {
@@ -209,5 +306,85 @@
 
   .heroProgress {
     margin-top: 24px;
+  }
+
+  .studyPage {
+    padding-inline: 12px;
+  }
+
+  .studyToolbar {
+    padding-inline: 2px;
+    margin-bottom: 8px;
+  }
+
+  .studyPanel {
+    padding: 24px 20px 34px;
+    border-radius: 24px;
+  }
+
+  .studyPanel > h1 {
+    font-size: 46px;
+    line-height: .98;
+  }
+
+  .studyPanel > h2 {
+    font-size: 29px;
+    line-height: 1.08;
+  }
+
+  .studyPanel > .lead {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .studySection {
+    padding: 26px 0;
+  }
+
+  .sectionTag {
+    margin-bottom: 16px;
+    font-size: 10px;
+    letter-spacing: .14em;
+  }
+
+  .sectionTag span {
+    width: 26px;
+    height: 26px;
+    flex-basis: 26px;
+    border-radius: 8px;
+  }
+
+  .question + .question {
+    margin-top: 22px;
+  }
+
+  .questionLabel {
+    font-size: 16px;
+    line-height: 1.48;
+    margin-bottom: 9px;
+  }
+
+  textarea {
+    min-height: 94px;
+    padding: 13px 14px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .referenceBox {
+    padding: 15px 16px;
+    border-radius: 16px;
+  }
+
+  .studyActions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .studyActions .primaryButton,
+  .studyActions .secondaryButton {
+    width: 100%;
+    min-height: 50px;
   }
 }
