@@ -269,6 +269,69 @@ textarea {
   margin-top: 16px;
 }
 
+/* Perfil: simples, claro e coerente com o restante da identidade */
+.profilePanel {
+  position: relative;
+  overflow: hidden;
+  max-width: 620px;
+  padding: 28px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(232,220,203,.5), transparent 34%),
+    linear-gradient(180deg, rgba(255,252,247,.96), rgba(255,252,247,.8));
+}
+
+.profilePanel::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0;
+  width: 42px;
+  height: 3px;
+  border-radius: 0 0 999px 999px;
+  background: var(--gold);
+  opacity: .72;
+}
+
+.profileEmail {
+  width: fit-content;
+  max-width: 100%;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(232,220,203,.42);
+  color: var(--petroleum-900);
+  font-size: 13px;
+  font-weight: 750;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileStat {
+  width: 100%;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(31,78,95,.055);
+  border: 1px solid rgba(31,78,95,.10);
+}
+
+.profileStat strong {
+  font-size: 44px;
+  line-height: .95;
+}
+
+.profileStat span {
+  font-size: 14px;
+}
+
+.profilePanel > .primaryButton {
+  width: fit-content;
+  min-width: 160px;
+}
+
+.profilePanel > .muted {
+  margin-top: 2px;
+}
+
 /* Navegação desktop integrada visualmente ao cabeçalho */
 @media (min-width: 900px) {
   .page {
@@ -485,5 +548,31 @@ textarea {
   .noteCard p {
     font-size: 15px;
     line-height: 1.5;
+  }
+
+  .profilePanel {
+    padding: 22px 20px;
+    border-radius: 22px;
+  }
+
+  .profilePanel::before {
+    left: 20px;
+    width: 34px;
+  }
+
+  .profileEmail {
+    font-size: 12px;
+  }
+
+  .profileStat {
+    padding: 16px;
+  }
+
+  .profileStat strong {
+    font-size: 40px;
+  }
+
+  .profilePanel > .primaryButton {
+    width: 100%;
   }
 }
