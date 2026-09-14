@@ -206,6 +206,69 @@ textarea {
   min-height: 48px;
 }
 
+/* Caderno: mais compacto, editorial e fácil de percorrer */
+.notesList {
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.noteCard {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 24px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255,252,247,.92), rgba(255,252,247,.76));
+}
+
+.noteCard::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  width: 34px;
+  height: 3px;
+  border-radius: 0 0 999px 999px;
+  background: var(--gold);
+  opacity: .65;
+}
+
+.noteHeader {
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.noteHeader b {
+  font-size: 27px;
+  line-height: 1;
+}
+
+.noteHeader .textButton {
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.noteLabel {
+  display: block;
+  margin: 14px 0 4px;
+  font-size: 10px;
+  letter-spacing: .13em;
+}
+
+.noteHeader + .noteLabel {
+  margin-top: 2px;
+}
+
+.noteCard p {
+  margin: 3px 0 0;
+  color: #2B353A;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.noteCard p + .noteLabel {
+  margin-top: 16px;
+}
+
 /* Navegação desktop integrada visualmente ao cabeçalho */
 @media (min-width: 900px) {
   .page {
@@ -386,5 +449,41 @@ textarea {
   .studyActions .secondaryButton {
     width: 100%;
     min-height: 50px;
+  }
+
+  .notesList {
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .noteCard {
+    padding: 18px 18px 17px;
+    border-radius: 20px;
+  }
+
+  .noteCard::before {
+    left: 18px;
+    width: 30px;
+  }
+
+  .noteHeader {
+    margin-bottom: 10px;
+  }
+
+  .noteHeader b {
+    font-size: 24px;
+  }
+
+  .noteHeader .textButton {
+    font-size: 13px;
+  }
+
+  .noteLabel {
+    margin-top: 11px;
+  }
+
+  .noteCard p {
+    font-size: 15px;
+    line-height: 1.5;
   }
 }
